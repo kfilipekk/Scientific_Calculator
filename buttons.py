@@ -1,3 +1,4 @@
+##buttons.py
 import tkinter as tk
 from tkinter import ttk
 
@@ -8,13 +9,10 @@ class CalculatorButtons:
         self.frame = ttk.Frame(parent)
         self.frame.grid(row=1, column=0, columnspan=5, sticky="nsew", padx=5, pady=5)
 
-        # Configure button styling
-        self.style = ttk.Style()
-        self.style.configure("Calc.TButton", font=("Arial", 12), padding=5)
-
         self.create_buttons()
 
     def create_buttons(self):
+        """Creates and lays out all calculator buttons."""
         button_layout = [
             ("MC", self.logic.memory_clear, 0, 0), ("MR", self.logic.memory_recall, 0, 1),
             ("M+", self.logic.memory_add, 0, 2), ("M-", self.logic.memory_subtract, 0, 3),
@@ -28,12 +26,12 @@ class CalculatorButtons:
             ("acos", lambda: self.logic.scientific_operation("acos"), 2, 1),
             ("atan", lambda: self.logic.scientific_operation("atan"), 2, 2),
             ("tanh", lambda: self.logic.scientific_operation("tanh"), 2, 3),
-            ("π", lambda: self.logic.scientific_operation("pi"), 2, 4),
+            ("π", lambda: self.logic.insert_constant("π"), 2, 4),
             ("log", lambda: self.logic.scientific_operation("log"), 3, 0),
             ("ln", lambda: self.logic.scientific_operation("ln"), 3, 1),
             ("√", lambda: self.logic.scientific_operation("sqrt"), 3, 2),
             ("e^x", lambda: self.logic.scientific_operation("exp"), 3, 3),
-            ("e", lambda: self.logic.scientific_operation("e"), 3, 4),
+            ("e", lambda: self.logic.insert_constant("e"), 3, 4),
             ("7", lambda: self.logic.append_digit("7"), 4, 0),
             ("8", lambda: self.logic.append_digit("8"), 4, 1),
             ("9", lambda: self.logic.append_digit("9"), 4, 2),
@@ -63,10 +61,16 @@ class CalculatorButtons:
             ("cm→m", lambda: self.logic.convert_unit("cm_to_m"), 9, 1),
             ("kg→g", lambda: self.logic.convert_unit("kg_to_g"), 9, 2),
             ("g→kg", lambda: self.logic.convert_unit("g_to_kg"), 9, 3),
-            ("Graph Sin", lambda: self.logic.graph_function("sin"), 9, 4),
-            ("Graph Cos", lambda: self.logic.graph_function("cos"), 10, 0),
-            ("Graph Tan", lambda: self.logic.graph_function("tan"), 10, 1),
-            ("History", self.display.update_history, 10, 4)
+            ("C→F", lambda: self.logic.convert_unit("c_to_f"), 9, 4),
+            ("F→C", lambda: self.logic.convert_unit("f_to_c"), 10, 0),
+            ("km→m", lambda: self.logic.convert_unit("km_to_m"), 10, 1),
+            ("m→km", lambda: self.logic.convert_unit("m_to_km"), 10, 2),
+            ("c", lambda: self.logic.insert_constant("c"), 10, 3),
+            ("g", lambda: self.logic.insert_constant("g"), 10, 4),
+            ("Graph Sin", lambda: self.logic.graph_function("sin"), 11, 0),
+            ("Graph Cos", lambda: self.logic.graph_function("cos"), 11, 1),
+            ("Graph Tan", lambda: self.logic.graph_function("tan"), 11, 2),
+            ("History", self.display.update_history, 11, 4)
         ]
 
         self.buttons = {}
@@ -75,12 +79,13 @@ class CalculatorButtons:
                 self.frame,
                 text=text,
                 command=lambda cmd=command: self.update_display(cmd),
-                style="Calc.TButton"  # Set style for buttons
+                style="Calc.TButton"
             )
             btn.grid(row=row, column=col, sticky="nsew", padx=2, pady=2)
             self.buttons[text] = btn
 
-        for i in range(11):
+        ##Configure grid weights
+        for i in range(12):
             self.frame.grid_rowconfigure(i, weight=1)
         for i in range(5):
             self.frame.grid_columnconfigure(i, weight=1)
@@ -96,9 +101,6 @@ class CalculatorButtons:
             self.display.update(result)
         self.display.update_memory(self.logic.memory)
 
-    def update_theme(self, theme):
-        """Updates the button theme (light/dark)."""
-        if theme == "dark":
-            self.style.configure("Calc.TButton", background="#333333", foreground="white")
-        elif theme == "light":
-            self.style.configure("Calc.TButton", background="#e0e0e0", foreground="black")
+    def update_theme(self, theme, colors):
+        """Updates button theme (handled via ttk.Style in main.py)."""
+        pass  ##Theme is applied globally via style configuration

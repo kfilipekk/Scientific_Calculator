@@ -1,3 +1,4 @@
+##display.py
 import tkinter as tk
 from tkinter import ttk
 
@@ -48,27 +49,24 @@ class CalculatorDisplay:
         self.mode_label.pack(side="right", padx=5)
 
     def update(self, value):
+        """Updates the main display with the given value."""
         self.main_var.set(value)
 
     def update_memory(self, value):
+        """Updates the memory indicator."""
         self.memory_var.set("M" if value != 0 else "")
 
     def update_mode(self, mode):
+        """Updates the angle mode indicator."""
         self.mode_var.set(mode)
 
     def update_history(self):
+        """Updates the history display."""
         self.history_var.set(self.logic.get_history())
 
-    def update_theme(self, theme):
-        if theme == "dark":
-            self.main_display.configure(style="Dark.TLabel")
-            self.history_label.configure(style="Dark.TLabel")
-            self.memory_label.configure(style="Dark.TLabel")
-            self.mode_label.configure(style="Dark.TLabel")
-            self.style.configure("Dark.TLabel", background="#1e1e1e", foreground="white")
-        elif theme == "light":
-            self.main_display.configure(style="Light.TLabel")
-            self.history_label.configure(style="Light.TLabel")
-            self.memory_label.configure(style="Light.TLabel")
-            self.mode_label.configure(style="Light.TLabel")
-            self.style.configure("Light.TLabel", background="#f0f0f0", foreground="black")
+    def update_theme(self, theme, colors):
+        """Updates the display theme with specified colors."""
+        self.main_display.configure(foreground=colors["fg"], background=colors["bg"])
+        self.history_label.configure(foreground=colors["fg"], background=colors["bg"])
+        self.memory_label.configure(foreground=colors["fg"], background=colors["bg"])
+        self.mode_label.configure(foreground=colors["fg"], background=colors["bg"])

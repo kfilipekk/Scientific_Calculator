@@ -16,19 +16,32 @@ class CalculatorLogic:
             "cm_to_m": lambda x: x / 100,
             "kg_to_g": lambda x: x * 1000,
             "g_to_kg": lambda x: x / 1000,
+            "c_to_f": lambda x: (x * 9/5) + 32,
+            "f_to_c": lambda x: (x - 32) * 5/9,
+            "km_to_m": lambda x: x * 1000,
+            "m_to_km": lambda x: x / 1000,
+        }
+        self.constants = {
+            "π": math.pi,
+            "e": math.e,
+            "c": 299792458,
+            "g": 9.80665, 
         }
 
     def clear(self):
+        """Clears all current calculation data."""
         self.current = "0"
         self.operation = None
         self.previous = None
         return self.current
 
     def clear_entry(self):
+        """Clears the current entry."""
         self.current = "0"
         return self.current
 
     def memory_store(self):
+        """Stores the current value in memory."""
         try:
             self.memory = float(self.current)
         except ValueError:
@@ -36,14 +49,17 @@ class CalculatorLogic:
         return self.current
 
     def memory_recall(self):
+        """Recalls the memory value."""
         self.current = str(self.memory)
         return self.current
 
     def memory_clear(self):
+        """Clears the memory."""
         self.memory = 0.0
         return self.current
 
     def memory_add(self):
+        """Adds the current value to memory."""
         try:
             self.memory += float(self.current)
         except ValueError:
@@ -51,6 +67,7 @@ class CalculatorLogic:
         return self.current
 
     def memory_subtract(self):
+        """Subtracts the current value from memory."""
         try:
             self.memory -= float(self.current)
         except ValueError:
@@ -58,10 +75,12 @@ class CalculatorLogic:
         return self.current
 
     def toggle_angle_mode(self):
+        """Toggles between radians and degrees."""
         self.is_radians = not self.is_radians
         return "RAD" if self.is_radians else "DEG"
 
     def evaluate(self):
+        """Evaluates the current operation."""
         if self.previous is None or self.operation is None:
             return self.current
         try:
@@ -90,6 +109,7 @@ class CalculatorLogic:
             return "Error"
 
     def scientific_operation(self, op):
+        """Performs scientific operations."""
         try:
             value = complex(self.current) if "j" in self.current else float(self.current)
             if isinstance(value, complex):
@@ -120,10 +140,6 @@ class CalculatorLogic:
                     result = math.sqrt(value)
                 elif op == "exp":
                     result = math.exp(value)
-                elif op == "pi":
-                    result = math.pi
-                elif op == "e":
-                    result = math.e
                 elif op == "sinh":
                     result = math.sinh(value)
                 elif op == "cosh":
@@ -138,6 +154,7 @@ class CalculatorLogic:
             return "Error"
 
     def append_digit(self, digit):
+        """Appends a digit to the current value."""
         if self.current in ("0", "Error"):
             self.current = digit
         else:
@@ -145,15 +162,18 @@ class CalculatorLogic:
         return self.current
 
     def append_decimal(self):
+        """Appends a decimal point."""
         if "." not in self.current:
             self.current += "."
         return self.current
 
     def append_complex(self):
+        """Appends 'j' for complex numbers."""
         self.current += "j"
         return self.current
 
     def set_operation(self, op):
+        """Sets the current operation."""
         if self.current != "Error":
             self.previous = self.current
             self.operation = op
@@ -161,6 +181,7 @@ class CalculatorLogic:
         return self.current
 
     def negate(self):
+        """Negates the current value."""
         try:
             self.current = str(-float(self.current))
         except ValueError:
@@ -168,6 +189,7 @@ class CalculatorLogic:
         return self.current
 
     def percent(self):
+        """Converts the current value to a percentage."""
         try:
             self.current = str(float(self.current) / 100)
         except ValueError:
@@ -175,6 +197,7 @@ class CalculatorLogic:
         return self.current
 
     def factorial(self):
+        """Calculates the factorial of the current value."""
         try:
             value = int(float(self.current))
             if value >= 0:
@@ -186,6 +209,7 @@ class CalculatorLogic:
         return self.current
 
     def convert_unit(self, conversion):
+        """Performs unit conversion."""
         try:
             value = float(self.current)
             self.current = str(self.unit_conversions[conversion](value))
@@ -193,7 +217,13 @@ class CalculatorLogic:
         except Exception:
             return "Error"
 
+    def insert_constant(self, const):
+        """Inserts a constant into the current value."""
+        self.current = str(self.constants[const])
+        return self.current
+
     def graph_function(self, func):
+        """Graphs the specified function."""
         try:
             x = np.linspace(-10, 10, 400)
             if func == "sin":
@@ -215,4 +245,5 @@ class CalculatorLogic:
             pass
 
     def get_history(self):
+        """Returns the calculation history."""
         return "\n".join(self.history) if self.history else "No history"
