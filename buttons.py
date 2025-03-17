@@ -1,4 +1,3 @@
-##buttons.py
 import tkinter as tk
 from tkinter import ttk
 
@@ -67,9 +66,6 @@ class CalculatorButtons:
             ("m→km", lambda: self.logic.convert_unit("m_to_km"), 10, 2),
             ("c", lambda: self.logic.insert_constant("c"), 10, 3),
             ("g", lambda: self.logic.insert_constant("g"), 10, 4),
-            ("Graph Sin", lambda: self.logic.graph_function("sin"), 11, 0),
-            ("Graph Cos", lambda: self.logic.graph_function("cos"), 11, 1),
-            ("Graph Tan", lambda: self.logic.graph_function("tan"), 11, 2),
             ("History", self.display.update_history, 11, 4)
         ]
 
@@ -84,7 +80,7 @@ class CalculatorButtons:
             btn.grid(row=row, column=col, sticky="nsew", padx=2, pady=2)
             self.buttons[text] = btn
 
-        ##Configure grid weights
+        ## Configure grid weights
         for i in range(12):
             self.frame.grid_rowconfigure(i, weight=1)
         for i in range(5):
@@ -101,6 +97,6 @@ class CalculatorButtons:
             self.display.update(result)
         self.display.update_memory(self.logic.memory)
 
-    def update_theme(self, theme, colors):
+    def update_theme(self, colors):
         """Updates button theme (handled via ttk.Style in main.py)."""
-        pass  ##Theme is applied globally via style configuration
+        pass  # Theme is applied globally via style configuration

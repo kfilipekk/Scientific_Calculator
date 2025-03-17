@@ -1,4 +1,3 @@
-##display.py
 import tkinter as tk
 from tkinter import ttk
 
@@ -64,8 +63,8 @@ class CalculatorDisplay:
         """Updates the history display."""
         self.history_var.set(self.logic.get_history())
 
-    def update_theme(self, theme, colors):
-        """Updates the display theme with specified colors."""
+    def update_theme(self, colors):
+        """Updates the display theme with specified colours."""
         self.main_display.configure(foreground=colors["fg"], background=colors["bg"])
         self.history_label.configure(foreground=colors["fg"], background=colors["bg"])
         self.memory_label.configure(foreground=colors["fg"], background=colors["bg"])
